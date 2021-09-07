@@ -1,32 +1,31 @@
 name:                cal-clone
 version:             0.1.0.0
-github:              "githubuser/cal-clone"
+github:              "FourCredits/cal-clone"
 license:             BSD3
-author:              "Author name here"
-maintainer:          "example@example.com"
-copyright:           "2021 Author name here"
+author:              "Erik Grundy"
+maintainer:          "erik.grundy@gmail.com"
+copyright:           "2021 Erik Grundy"
 
 extra-source-files:
 - README.md
 - ChangeLog.md
 
-# Metadata used when publishing your package
-# synopsis:            Short description of your package
-# category:            Web
+synopsis:            cal clone, written in Haskell, with Monday as the first day of the week
+category:            Shell
 
-# To avoid duplicated efforts in documentation and dealing with the
-# complications of embedding Haddock markup inside cabal files, it is
-# common to point users to the README.md file.
 description:         Please see the README on GitHub at <https://github.com/githubuser/cal-clone#readme>
 
 dependencies:
 - base >= 4.7 && < 5
+- time >= 1.9
+- split >= 0.2
+- ansi-terminal >= 0.6
 
 library:
   source-dirs: src
 
 executables:
-  cal-clone-exe:
+  mal:
     main:                Main.hs
     source-dirs:         app
     ghc-options:

@@ -6,12 +6,14 @@ cabal-version: 1.12
 
 name:           cal-clone
 version:        0.1.0.0
+synopsis:       cal clone, written in Haskell, with Monday as the first day of the week
 description:    Please see the README on GitHub at <https://github.com/githubuser/cal-clone#readme>
-homepage:       https://github.com/githubuser/cal-clone#readme
-bug-reports:    https://github.com/githubuser/cal-clone/issues
-author:         Author name here
-maintainer:     example@example.com
-copyright:      2021 Author name here
+category:       Shell
+homepage:       https://github.com/FourCredits/cal-clone#readme
+bug-reports:    https://github.com/FourCredits/cal-clone/issues
+author:         Erik Grundy
+maintainer:     erik.grundy@gmail.com
+copyright:      2021 Erik Grundy
 license:        BSD3
 license-file:   LICENSE
 build-type:     Simple
@@ -21,7 +23,7 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/githubuser/cal-clone
+  location: https://github.com/FourCredits/cal-clone
 
 library
   exposed-modules:
@@ -31,10 +33,13 @@ library
   hs-source-dirs:
       src
   build-depends:
-      base >=4.7 && <5
+      ansi-terminal >=0.6
+    , base >=4.7 && <5
+    , split >=0.2
+    , time >=1.9
   default-language: Haskell2010
 
-executable cal-clone-exe
+executable mal
   main-is: Main.hs
   other-modules:
       Paths_cal_clone
@@ -42,8 +47,11 @@ executable cal-clone-exe
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      ansi-terminal >=0.6
+    , base >=4.7 && <5
     , cal-clone
+    , split >=0.2
+    , time >=1.9
   default-language: Haskell2010
 
 test-suite cal-clone-test
@@ -55,6 +63,9 @@ test-suite cal-clone-test
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      ansi-terminal >=0.6
+    , base >=4.7 && <5
     , cal-clone
+    , split >=0.2
+    , time >=1.9
   default-language: Haskell2010
