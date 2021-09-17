@@ -34,6 +34,7 @@ Roughly in order of priority:
 
 - [ ] Specifying a month other than the current one.
 - [ ] Showing more than one month (like `cal`'s `-3` option).
+- [ ] Refactor to use a pretty printer
 - [ ] Tests?
 
 Feel free to raise an issue if you think something should be added to this list.
