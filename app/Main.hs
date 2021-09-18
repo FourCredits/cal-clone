@@ -23,10 +23,10 @@ data Args =
   deriving (Show)
 
 yearP :: Integer -> Parser Integer
-yearP y = option auto ( long "year" <> short 'y' <> showDefault <> value y <> help "Which year to print")
+yearP y = option auto ( long "year" <> short 'y' <> metavar "Y" <> showDefault <> value y <> help "Print Y year")
 
 monthP :: Int -> Parser Int
-monthP m = option auto ( long "month" <> short 'm' <> showDefault <> value m <> help "Which month to print" )
+monthP m = option auto ( long "month" <> short 'm' <> metavar "M" <> showDefault <> value m <> help "Print M month" )
 
 getCurrentDay :: IO Day
 getCurrentDay = localDay . zonedTimeToLocalTime <$> getZonedTime
