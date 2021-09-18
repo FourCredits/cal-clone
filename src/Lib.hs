@@ -3,27 +3,20 @@ module Lib ( printMonth, prettyPrintMonth ) where
 import Data.List.Split
 import Data.Time.Calendar
 import Data.Time.Format
-import Data.Time.LocalTime
 import System.Console.ANSI
 import Text.PrettyPrint.Boxes
 import Text.Printf
 
-printMonth :: IO ()
-printMonth = getCurrentDay >>= printBox . prettyPrintMonth
+printMonth :: Day -> Integer -> Int -> IO ()
+printMonth today y m = printBox $ prettyPrintMonth today y m
 
-getCurrentDay :: IO Day
-getCurrentDay = localDay . zonedTimeToLocalTime <$> getZonedTime
-
--- TODO: make y m parameters of this function to allow easy printing of
--- different month
-prettyPrintMonth :: Day -> Box
-prettyPrintMonth today =
-    vcat top [title y m, dayOfWeekHeader, vcat top $ map (week today) weeks]
+prettyPrintMonth :: Day -> Integer -> Int -> Box
+prettyPrintMonth today y m =
+  vcat top [title y m, dayOfWeekHeader, vcat top $ map (week today) weeks]
   where
-    (y, m, _) = toGregorian today
-    numDays   = gregorianMonthLength y m
-    days      = map (fromGregorian y m) [1 .. numDays]
-    weeks     = sepByWeeks days
+    numDays = gregorianMonthLength y m
+    days = map (fromGregorian y m) [1 .. numDays]
+    weeks = sepByWeeks days
 
 -- TODO: maybe make less ugly
 sepByWeeks :: [Day] -> [[Day]]
@@ -37,7 +30,7 @@ sepByWeeks days = firstWeek : remainingWeeks
 title :: Integer -> Int -> Box
 title y m = alignHoriz center1 20 $ text (monthTitle ++ show y)
   where
-    monthTitle = formatTime defaultTimeLocale "%B" $ fromGregorian y m 1
+    monthTitle = formatTime defaultTimeLocale "%B " $ fromGregorian y m 1
 
 dayOfWeekHeader :: Box
 dayOfWeekHeader =

@@ -32,7 +32,7 @@ Terminal?
 
 Roughly in order of priority:
 
-- [ ] Specifying a month other than the current one.
+- [x] Specifying a month/year other than the current one.
 - [ ] Showing more than one month (like `cal`'s `-3` option).
 - [x] Refactor to use a pretty printer
 - [ ] Tests?
