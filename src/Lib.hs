@@ -22,7 +22,7 @@ prettyPrintMonth today y m =
 sepByWeeks :: [Day] -> [[Day]]
 sepByWeeks days = firstWeek : remainingWeeks
   where
-    (firstWeekMinusSunday, (sunday:remainingDays)) = break isSunday days
+    (firstWeekMinusSunday, sunday:remainingDays) = break isSunday days
     firstWeek = firstWeekMinusSunday ++ [sunday]
     remainingWeeks = chunksOf 7 remainingDays
     isSunday d = dayOfWeek d == Sunday
@@ -37,13 +37,14 @@ dayOfWeekHeader =
   hsep 1 left $ map text ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
 
 week :: Day -> [Day] -> Box
+week _ [] = undefined
 week today w@(d1:_) = hsep 1 left days
   where
     startDay = dayOfWeek d1
     n = length [Monday .. startDay] - 1
     days = if startDay == Monday
       then map (day today) w
-      else (replicate n blankDay) ++ map (day today) w
+      else replicate n blankDay ++ map (day today) w
 
 blankDay :: Box
 blankDay = emptyBox 1 2
