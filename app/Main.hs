@@ -10,10 +10,10 @@ main :: IO ()
 main = do
   today <- getCurrentDay
   let (thisYear, thisMonth, _) = toGregorian today
-      argParser = (,) <$> (yearP thisYear) <*> (monthP thisMonth)
+      argParser = (,,) <$> (yearP thisYear) <*> (monthP thisMonth) <*> numberP
       parser = info (argParser <**> helper) (fullDesc <> progDesc "Print a calendar")
-  (y, m) <- execParser parser
-  printMonth today y m
+  (y, m, n) <- execParser parser
+  printMonths (y, m) n
 
 yearP :: Integer -> Parser Integer
 yearP y = option auto
@@ -21,7 +21,7 @@ yearP y = option auto
   <> short 'y'
   <> metavar "Y"
   <> value y
-  <> help "Print Y year (defaults to current year)" )
+  <> help "Start from Y year (defaults to current year)" )
 
 monthP :: Int -> Parser Int
 monthP m = option auto
@@ -29,7 +29,16 @@ monthP m = option auto
   <> short 'm'
   <> metavar "M"
   <> value m
-  <> help "Print M month (defaults to current month)" )
+  <> help "Start from M month (defaults to current month)" )
+
+numberP :: Parser Int
+numberP = option auto
+  (  long "number"
+  <> short 'n'
+  <> metavar "N"
+  <> value 1
+  <> showDefault
+  <> help "How many months to print" )
 
 getCurrentDay :: IO Day
 getCurrentDay = localDay . zonedTimeToLocalTime <$> getZonedTime

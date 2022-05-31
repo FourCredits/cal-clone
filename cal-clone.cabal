@@ -33,8 +33,7 @@ library
   hs-source-dirs:
       src
   build-depends:
-      ansi-terminal >=0.6
-    , base >=4.7 && <5
+      base >=4.7 && <5
     , boxes >=0.1.5
     , optparse-applicative >=0.16
     , split >=0.2
@@ -49,8 +48,7 @@ executable mal
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      ansi-terminal >=0.6
-    , base >=4.7 && <5
+      base >=4.7 && <5
     , boxes >=0.1.5
     , cal-clone
     , optparse-applicative >=0.16
@@ -67,8 +65,7 @@ test-suite cal-clone-test
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      ansi-terminal >=0.6
-    , base >=4.7 && <5
+      base >=4.7 && <5
     , boxes >=0.1.5
     , cal-clone
     , optparse-applicative >=0.16

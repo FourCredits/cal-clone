@@ -1,19 +1,25 @@
-module Lib ( printMonth, prettyPrintMonth ) where
+module Lib ( printMonths ) where
 
 import Data.List.Split
 import Data.Time.Calendar
 import Data.Time.Format
-import System.Console.ANSI
 import Text.PrettyPrint.Boxes
 import Text.Printf
 import Data.Bool
 
-printMonth :: Day -> Integer -> Int -> IO ()
-printMonth today y m = printBox $ prettyPrintMonth today y m
+type Month = (Integer, Int)
 
-prettyPrintMonth :: Day -> Integer -> Int -> Box
-prettyPrintMonth today y m =
-  vcat top (title y m : dayOfWeekHeader : map (week today) weeks)
+printMonths :: Month -> Int -> IO ()
+printMonths (y, m) n = printBox $ hsep 5 left months
+  where
+    months = map (prettyPrintMonth . wrapMonth) [m .. (m + n - 1)]
+    wrapMonth m = if m <= 12
+      then (y, m)
+      else (y + fromIntegral (m `div` 12), m `mod` 12)
+
+prettyPrintMonth :: Month -> Box
+prettyPrintMonth (y, m) =
+  vcat top (title y m : dayOfWeekHeader : map week weeks)
   where
     numDays = gregorianMonthLength y m
     days = map (fromGregorian y m) [1 .. numDays]
@@ -28,24 +34,13 @@ dayOfWeekHeader :: Box
 dayOfWeekHeader =
   hsep 1 left $ map text ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
 
-week :: Day -> [Day] -> Box
-week _ [] = undefined
-week today w@(d1:_) = moveRight (3 * leftOffset) $ hsep 1 left days
+week :: [Day] -> Box
+week [] = undefined
+week w@(d1:_) = emptyBox 1 (3 * leftOffset) Text.PrettyPrint.Boxes.<> hsep 1 left days
   where
     leftOffset = length [Monday .. dayOfWeek d1] - 1
-    days = map (day today) w
+    days = map day w
 
-day :: Day -> Day -> Box
-day today d = text $ colorFunc $ printf "%2d" dayNum
-  where
-    (_, _, dayNum) = toGregorian d
-    colorFunc = bool id blackOnWhite (d == today)
-
-blackOnWhite :: String -> String
-blackOnWhite s =
-  concat
-    [ setSGRCode [SetColor Background Vivid White]
-    , setSGRCode [SetColor Foreground Vivid Black]
-    , s
-    , setSGRCode []
-    ]
+day :: Day -> Box
+day d = text $ printf "%2d" dayNum
+  where (_, _, dayNum) = toGregorian d

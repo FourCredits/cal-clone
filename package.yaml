@@ -19,7 +19,6 @@ dependencies:
 - base >= 4.7 && < 5
 - time >= 1.9
 - split >= 0.2
-- ansi-terminal >= 0.6
 - boxes >= 0.1.5
 - optparse-applicative >= 0.16
 
