@@ -9,38 +9,27 @@ import Lib
 main :: IO ()
 main = do
   today <- getCurrentDay
-  let (y, m, _) = toGregorian today
-      argParser = Args <$> (monthP m) <*> (yearP y)
-      parser =
-        info (argParser <**> helper) (fullDesc <> progDesc "Print a calendar")
-  Args m y <- execParser parser
+  let (thisYear, thisMonth, _) = toGregorian today
+      argParser = (,) <$> (yearP thisYear) <*> (monthP thisMonth)
+      parser = info (argParser <**> helper) (fullDesc <> progDesc "Print a calendar")
+  (y, m) <- execParser parser
   printMonth today y m
-
-data Args =
-  Args
-    { month :: Int
-    , year :: Integer
-    }
-  deriving (Show)
 
 yearP :: Integer -> Parser Integer
 yearP y = option auto
   (  long "year"
   <> short 'y'
   <> metavar "Y"
-  <> showDefault
   <> value y
-  <> help "Print Y year"
-  )
+  <> help "Print Y year (defaults to current year)" )
 
 monthP :: Int -> Parser Int
 monthP m = option auto
   (  long "month"
   <> short 'm'
   <> metavar "M"
-  <> showDefault
   <> value m
-  <> help "Print M month" )
+  <> help "Print M month (defaults to current month)" )
 
 getCurrentDay :: IO Day
 getCurrentDay = localDay . zonedTimeToLocalTime <$> getZonedTime
